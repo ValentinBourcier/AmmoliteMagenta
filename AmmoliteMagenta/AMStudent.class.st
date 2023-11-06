@@ -64,7 +64,14 @@ AMStudent >> hash [
 
 	"Answer an integer value that is related to the identity of the receiver."
 
-	^ name hash bitXor: marker hash
+	| vars |
+	vars := OrderedCollection new.
+	1 to: (MirrorPrimitives sizeOf: self) do: [ :i | 
+	vars add: (MirrorPrimitives fieldOf: self at: i) ].
+
+	vars size = 1 ifTrue: [ ^ vars first hash ].
+	vars size > 1 ifTrue: [ ^ vars first hash bitXor: vars second hash ].
+	^ super hash
 ]
 
 { #category : #accessing }
